@@ -1,3 +1,4 @@
+// Author:Tagore Zhao
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -13,7 +14,7 @@ int main(int argv, char** argc){
     cout << "Please provide 2 file names" << endl;
     return 1;
   }
-  
+
   ifstream cardFile1 (argc[1]);
   ifstream cardFile2 (argc[2]);
   string line;
@@ -26,36 +27,42 @@ int main(int argv, char** argc){
 Cards* A = new Cards;
 Cards* B = new Cards;
 */
+
 Cards A,B;
 
   //Read each file
   while (getline (cardFile1, line) && (line.length() > 0)){
     int n = CardNum(line);
     A.insert(n);
-
   }
   cardFile1.close();
 
-
   while (getline (cardFile2, line) && (line.length() > 0)){
-    int n = CardNum(line);
-    B.insert(n);
+    int m = CardNum(line);
+    B.insert(m);
   }
   cardFile2.close();
-
+/*
+cout << endl << "Alice's cards:" << endl;
+  A.printInOrder();
+  cout << endl << "Bob's cards:" << endl;
+  B.printInOrder();
+*/
   while(true){
-    bool m = StepOne(A, B);
-    if(m == true){
+    bool l = StepOne(A, B);
+    if(l == true){
       break;
     }
-    bool n = StepTwo(A, B);
-    if(n == true){
+    bool f = StepTwo(A, B);
+    if(f == true){
       break;
     }
   }
+
   cout << endl << "Alice's cards:" << endl;
   A.printInOrder();
   cout << endl << "Bob's cards:" << endl;
   B.printInOrder();
   return 0;
 }
+

@@ -1,3 +1,4 @@
+// Author:Tagore Zhao
 #include <iostream>
 #include <string>
 #include "cards.h"
@@ -5,123 +6,48 @@
 using namespace std; 
 
 int CardNum (string input){
+    int cSuit;
+    int Val;
+    string Suit = input.substr(0,1);
+    if(Suit == "c"){cSuit = 100;}
+    else if(Suit == "d"){cSuit = 200;}
+    else if(Suit == "s"){cSuit = 300;}
+    else if(Suit == "h"){cSuit = 400;}
 
-    int suit;
-    int number;
-    int Num;
-    string info =input.substr(0,1);
-    if (info == "c"){
-        suit = 100;
+    string Value = input.substr(2);
+    if(Value == "a"){Val = 1;}
+    else if(Value == "j"){Val = 11;}
+    else if(Value == "q"){Val = 12;}
+    else if(Value == "k"){Val = 13;}
+    else{
+        Val = stoi(Value);
     }
-    else if (info == "d"){
-        suit = 200;
-    }
-    else if (info == "s"){
-        suit = 300;
-    }
-    else if (info == "h"){
-        suit = 400;
-    }
-    info = input.substr(2);
-    if (info == "1"){
-            number = 1;
-        }
-        else if(info == "2"){
-            number = 2;
-        }
-        else if(info == "3"){
-            number = 3;
-        }
-        else if(info == "4"){
-            number = 4;
-        }
-        else if(info == "5"){
-            number = 5;
-        }
-        else if(info == "6"){
-            number = 6;
-        }
-        else if(info == "7"){
-            number = 7;
-        }
-        else if(info == "8"){
-            number = 8;
-        }
-        else if(info == "9"){
-            number = 9;
-        }
-        else if(info == "10"){
-            number = 10;
-        }
-        else if(info == "j"){
-            number = 11;
-        }
-        else if(info == "q"){
-            number = 12;
-        }
-        else if(info == "k"){
-            number = 13;
-        }
-    Num = number +suit;
-    return Num;           
+    int sum  = cSuit + Val;
+    return sum;           
 }
 
 string Suit (int value){
-    int suit = value / 100;
-    if (suit == 1){
-        return "c";
-    }
-    else if (suit == 2){
-        return "d";
-    }
-    else if (suit == 3){
-        return "s";
-    }
-    else{
-        return "h";
-    }
+    string suit;
+    suit = to_string(value).substr(0,1);
+    if(suit == "1"){suit = "c";}
+    else if(suit == "2"){suit = "d";}
+    else if(suit == "3"){suit = "s";}
+    else if(suit == "4"){suit = "h";}
+    return suit;
 }
 string Num (int value){
-    int num = value % 100;
-    if (num == 1){
-        return "1";
-    }
-    else if (num == 2){
-        return "2";
-    }
-    else if (num == 3){
-        return "3";
-    }
-    else if (num == 4){
-        return "4";
-    }
-    else if (num == 5){
-        return "5";
-    }
-    else if (num == 6){
-        return "6";
-    }
-    else if (num == 7){
-        return "7";
-    }
-    else if (num == 8){
-        return "8";
-    }
-    else if (num == 9){
-        return "9";
-    }
-    else if (num == 10){
-        return "10";
-    }
-    else if (num == 11){
-        return "j";
-    }
-    else if (num == 12){
-        return "q";
+    string v;
+    v = to_string(value).substr(1);
+    if(v.substr(0,1) == "0"){
+        if(v == "01"){v = "a";}
+        else{v = v.substr(1);}
     }
     else{
-        return "k";
+        if(v == "11"){v = "j";}
+        else if(v == "12"){v = "q";}
+        else if(v == "13"){v = "k";}
     }
+    return v;
 }
 bool StepOne(Cards& Alice, Cards& Bob){
     int min = Alice.Min();
@@ -142,9 +68,9 @@ bool StepOne(Cards& Alice, Cards& Bob){
             if (Bob.contains(a)){
                 Bob.remove(a);
                 Alice.remove(a);
-                cout << "Alice picked matching card " << Suit(min) <<" "<< Num(min)<<endl;
+                cout << "Alice picked matching card " << Suit(a) <<" "<< Num(a)<<endl;
                 return false;
-            }
+            }    
         }
     return true;
     }
@@ -152,23 +78,23 @@ bool StepOne(Cards& Alice, Cards& Bob){
 bool StepTwo(Cards& Alice, Cards& Bob){
     int min = Bob.Min();
     int max = Bob.Max();
-    int a = min;
+    int b = max;
     if (max == 0 || min == 0){
         return true;
     }
     if(Alice.contains(max)){
         Bob.remove(max);
         Alice.remove(max);
-        cout << "Bob picked matching card " << Suit(min) <<" "<< Num(min)<<endl;
+        cout << "Bob picked matching card " << Suit(max) <<" "<< Num(max)<<endl;
         return false;
     }
     else{
-        while (a != max){
-            a = Alice.getPredecessor(a);
-            if (Bob.contains(a)){
-                Bob.remove(a);
-                Alice.remove(a);
-                cout << "Bob picked matching card " << Suit(min) <<" "<< Num(min)<<endl;
+        while (b != min){
+            b = Bob.getPredecessor(b);
+            if (Alice.contains(b)){
+                Bob.remove(b);
+                Alice.remove(b);
+                cout << "Bob picked matching card " << Suit(b) <<" "<< Num(b)<<endl;
                 return false;
             }
         }
