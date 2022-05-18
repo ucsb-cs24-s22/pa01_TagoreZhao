@@ -110,7 +110,6 @@ void Cards::printPreOrder(Node *n) const{
 }
 void Cards::printInOrder() const{
     printInOrder(root);
-
 }
 void Cards::printInOrder(Node *n) const{
     if (n == nullptr){
